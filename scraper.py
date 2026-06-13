@@ -36,10 +36,13 @@ def scrape_twingos():
 
                 price = card.locator(".pricefield-primary").first.inner_text()
 
+                tech_data = card.locator(".talalatisor-info.adatok").first.inner_text()
+
                 # Hozzáadjuk az adatokat a listához egy dictionary formájában
                 cars_data.append({
                     "Title": title,
                     "Price": price,
+                    "Tech_Data": tech_data,
                     "Link": link
                 })
             except Exception as e:
