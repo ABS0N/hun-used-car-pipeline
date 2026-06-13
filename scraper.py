@@ -16,6 +16,21 @@ def scrape_twingos():
         # Várunk picit, hogy az oldal biztosan betöltsön
         page.wait_for_timeout(3000)
 
+        # 1. Beállítjuk a 100-as értéket
+        page.locator("#hirdetesszemelyautosearch-results").select_option("100")
+
+        # 2. Megvárjuk, amíg a 'submitSzukites' nevű gomb fizikailag létezik (és nem egy másik gomb)
+        print("Waiting for the 'Szűrés' button to be ready in the DOM...")
+        page.wait_for_selector('button[name="submitSzukites"]', state="attached")
+
+        # 3. Kényszerített kattintás (Bypassolja a CSS 'hidden' szabályokat)
+        print("Forcing the click via Playwright...")
+        page.locator('button[name="submitSzukites"]').first.click(force=True)
+
+        # 4. Várunk az újratöltésre
+        print("Waiting for the 100 items to load...")
+        page.wait_for_timeout(5000)
+
         print("Extracting data from all ads on the page...")
 
         # 1. Lekérjük az ÖSSZES hirdetés kártyáját egy listába
